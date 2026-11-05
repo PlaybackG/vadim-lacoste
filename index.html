@@ -52,7 +52,7 @@ em{font-style:italic;font-weight:500}
 #hint{position:absolute;right:150px;top:56px;font:600 16px/1 var(--sans);letter-spacing:.12em;opacity:.0;z-index:50;color:var(--cream)}
 
 /* wipe */
-.wipe{position:absolute;inset:-2px;z-index:40;transform:translateX(-101%);pointer-events:none}
+.wipe{position:absolute;inset:-2px;z-index:40;visibility:hidden;pointer-events:none}
 .wipe.a{background:var(--croc)} .wipe.b{background:var(--cream)}
 
 /* логотип: цвета через переменные, на тёмном — монохром */
@@ -429,7 +429,7 @@ function setMonth(m, instant) {
   gsap.to($('i', tabs), { x: act.offsetLeft, width: act.offsetWidth, duration: instant ? 0 : .7, ease: 'expo.inOut' });
   order.forEach((t, rank) => {
     $('.pos', t.el).textContent = rank + 1;
-    gsap.to(t.el, { y: rank * ROWH, duration: instant ? 0 : 1.1, ease: 'expo.inOut', delay: instant ? 0 : rank * .03, overwrite: true });
+    gsap.to(t.el, { y: rank * ROWH, duration: instant ? 0 : 1.1, ease: 'expo.inOut', delay: instant ? 0 : rank * .03, overwrite: 'auto' });
     const vals = $$('.v', t.el);
     const o = { a: t.cur[0], b: t.cur[1], c: t.cur[2], e: t.cur[3] };
     t.tw && t.tw.kill();
@@ -562,6 +562,7 @@ const HOOKS = {
 /* ---------- движок ---------- */
 const stage = $('#stage'), slides = $$('.slide'), fill = $('#fill'), cnt = $('#cnt'), hud = $('#hud');
 const wipes = $$('.wipe');
+gsap.set(wipes, { xPercent: -101, autoAlpha: 1 });
 let cur = -1, step = 0, enterTl = null, busy = false;
 
 function fit() { const s = Math.min(innerWidth / 1920, innerHeight / 1080); stage.style.transform = `translate(-50%,-50%) scale(${s})`; }
@@ -598,20 +599,17 @@ function go(n) {
   cnt.textContent = String(n + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
   if (!prev) { enter(next); return; }
   busy = true;
-  if (next.hasAttribute('data-wipe') || prev.hasAttribute('data-wipe') && false) {
-    const dir = forward ? 1 : -1;
-    gsap.timeline({ onComplete: () => busy = false })
-      .fromTo(wipes[0], { xPercent: -101 * dir }, { xPercent: 0, duration: .55, ease: 'power4.in' })
-      .fromTo(wipes[1], { xPercent: -101 * dir }, { xPercent: 0, duration: .55, ease: 'power4.in' }, .08)
-      .call(() => { prev.classList.remove('on'); gsap.set(prev, { autoAlpha: 0 }); enter(next); enterTl.pause(); })
-      .to(wipes[1], { xPercent: 101 * dir, duration: .7, ease: 'power4.out' })
-      .to(wipes[0], { xPercent: 101 * dir, duration: .7, ease: 'power4.out' }, '<.08')
-      .call(() => enterTl.play(), null, '<-.05');
-  } else {
-    enter(next);
-    gsap.set(prev, { zIndex: 5 });
-    gsap.to(prev, { autoAlpha: 0, scale: 1.04, duration: .55, ease: 'power2.in', onComplete: () => { prev.classList.remove('on'); gsap.set(prev, { zIndex: 0, scale: 1 }); busy = false; } });
-  }
+  // Каждый переход — двойная шторка: зелёная + цвета следующего слайда. Большие главы — медленнее.
+  const dir = forward ? 1 : -1, big = next.hasAttribute('data-wipe'), tin = big ? .55 : .42, tout = big ? .7 : .55;
+  wipes[1].style.background = next.classList.contains('cream') ? 'var(--cream)' : 'var(--g)';
+  gsap.timeline({ onComplete: () => busy = false })
+    .fromTo(wipes[0], { xPercent: -101 * dir }, { xPercent: 0, duration: tin, ease: 'power4.in' })
+    .fromTo(wipes[1], { xPercent: -101 * dir }, { xPercent: 0, duration: tin, ease: 'power4.in' }, .07)
+    .addLabel('sw')
+    .call(() => { prev.classList.remove('on'); gsap.set(prev, { autoAlpha: 0 }); enter(next); enterTl.pause(0); }, null, 'sw')
+    .to(wipes[1], { xPercent: 101 * dir, duration: tout, ease: 'power4.out' }, 'sw+=0.02')
+    .to(wipes[0], { xPercent: 101 * dir, duration: tout, ease: 'power4.out' }, 'sw+=0.11')
+    .call(() => enterTl.play(), null, 'sw+=0.12');
 }
 function next() {
   const h = HOOKS[slides[cur].id];
