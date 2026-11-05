@@ -1,0 +1,667 @@
+<meta charset="utf-8">
+<title>Матвеев Вадим Владимирович</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..800;1,400..800&family=Manrope:wght@300..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#0B3B26; --g2:#10502F; --g3:#16663D; --croc:#1F8F52; --mint:#9FD8B4;
+  --cream:#F4EFE4; --cream2:#E8E0CE; --ink:#0D1F16; --mut:#5F6F65;
+  --ball:#DDF24C; --red:#C8283C;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Manrope',system-ui,sans-serif;
+  --night:#05120B;
+  --lc-word:#181713; --lc-croc:#06532a; --lc-mouth:#d30018;
+  color-scheme:dark;
+}
+/* поворот телефона */
+#rotate{position:fixed;inset:0;z-index:100;background:var(--g);color:var(--cream);display:none;flex-direction:column;align-items:center;justify-content:center;gap:28px;text-align:center;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px));font-family:var(--sans)}
+#rotate .ph{width:64px;height:108px;border:3px solid var(--cream);border-radius:14px;animation:rot 2.4s ease-in-out infinite}
+@keyframes rot{0%,20%{transform:rotate(0)}50%,80%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
+#rotate h3{font:500 34px/1.1 var(--serif)}
+#rotate p{font:500 16px/1.45 var(--sans);opacity:.75;max-width:280px}
+#rotate button{font:700 15px/1 var(--sans);letter-spacing:.08em;color:var(--ink);background:var(--cream);border:0;border-radius:99px;padding:14px 22px;cursor:pointer}
+@media (orientation:portrait) and (max-width:820px){ body:not(.skiprot) #rotate{display:flex} }
+html,body{touch-action:manipulation}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:var(--night);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+body.idle{cursor:none}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:50% 50%;overflow:hidden;background:var(--g)}
+.slide{position:absolute;inset:0;visibility:hidden;padding:120px 150px 140px;overflow:hidden}
+.slide.on{visibility:visible}
+.dark{background:var(--g);color:var(--cream)}
+.cream{background:var(--cream);color:var(--ink)}
+.pique::before{content:'';position:absolute;inset:0;background-image:radial-gradient(currentColor .9px,transparent 1.4px);background-size:7px 7px;opacity:.07;pointer-events:none}
+.ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.ln>span{display:block}
+h1,h2,.serif{font-family:var(--serif);font-weight:500;letter-spacing:-.02em;line-height:.98}
+em{font-style:italic;font-weight:500}
+.cream em{color:var(--croc)} .dark em{color:var(--mint)}
+.kicker{font:700 20px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;opacity:.65;display:flex;align-items:center;gap:18px}
+.kicker::before{content:'';width:46px;height:2px;background:currentColor}
+.w{display:inline-block}
+.c{display:inline-block}
+.tag{display:inline-block;font:700 17px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:10px 16px;border-radius:99px;border:1.5px solid currentColor;opacity:.8}
+
+/* HUD */
+#hud{position:absolute;left:150px;right:150px;bottom:54px;display:flex;align-items:center;gap:28px;font:600 18px/1 var(--sans);letter-spacing:.12em;z-index:50;pointer-events:none;transition:color .6s}
+#hud .bar{flex:1;height:2px;background:currentColor;opacity:.18;position:relative}
+#hud .fill{position:absolute;left:0;top:0;bottom:0;width:100%;background:currentColor;transform-origin:0 0;transform:scaleX(0)}
+#hud .bar-wrap{flex:1;position:relative;height:2px}
+#hud .bar-wrap .bar{position:absolute;inset:0}
+#hud .bar-wrap .fill{opacity:1}
+#hint{position:absolute;right:150px;top:56px;font:600 16px/1 var(--sans);letter-spacing:.12em;opacity:.0;z-index:50;color:var(--cream)}
+
+/* wipe */
+.wipe{position:absolute;inset:-2px;z-index:40;transform:translateX(-101%);pointer-events:none}
+.wipe.a{background:var(--croc)} .wipe.b{background:var(--cream)}
+
+/* логотип: цвета через переменные, на тёмном — монохром */
+.lc-word{fill:var(--lc-word)} .lc-croc{fill:var(--lc-croc)} .lc-mouth{fill:var(--lc-mouth)}
+.dark,.mono{--lc-word:var(--cream);--lc-croc:var(--cream);--lc-mouth:var(--cream)}
+
+/* ===== 1. Cover ===== */
+#s1 .panel{position:absolute;right:0;top:0;bottom:0;width:640px;background:var(--g);transform-origin:100% 50%;overflow:hidden}
+#s1 .court{position:absolute;left:-420px;top:60px;width:1300px;height:1150px;perspective:1700px;pointer-events:none}
+#s1 .court svg{width:100%;height:100%;transform:rotateX(58deg) rotateZ(-30deg);transform-origin:50% 50%}
+#s1 .court svg *{fill:none;stroke:var(--cream);stroke-width:7;opacity:.4}
+#s1 .court svg .net{stroke-width:16;opacity:.7}
+#s1 .pcroc{position:absolute;right:90px;top:120px;width:300px;height:174px}
+#s1 .pcap{position:absolute;right:90px;top:316px;font:700 18px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--cream);opacity:.7}
+#s1 .copy{position:relative;z-index:3;height:100%;display:flex;flex-direction:column;justify-content:center;max-width:1080px}
+#s1 .biglogo{width:600px;height:106px;display:block;margin-bottom:64px}
+#s1 h1{font-size:150px;margin:36px 0 44px}
+#s1 .role{font:500 32px/1.3 var(--sans);max-width:800px}
+#s1 .role b{font-weight:800;color:var(--croc)}
+#s1 .ballwrap{position:absolute;left:1100px;top:700px;z-index:4}
+.ball{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#F4FF9C 0,var(--ball) 38%,#A9C21E 100%);position:relative;box-shadow:inset -10px -14px 30px rgba(0,0,0,.18)}
+.ball svg{position:absolute;inset:0}
+.ball svg path{fill:none;stroke:#fff;stroke-width:5;opacity:.9}
+.shadow{position:absolute;left:5px;top:150px;width:120px;height:22px;border-radius:50%;background:rgba(0,0,0,.35);filter:blur(8px)}
+
+/* ===== 2. Idea ===== */
+#s2 .wall{position:absolute;inset:-40px 0;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
+#s2 .wall div{white-space:nowrap;font:italic 500 190px/1 var(--serif);color:transparent;-webkit-text-stroke:1.5px rgba(244,239,228,.13)}
+#s2 .copy{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;max-width:1450px}
+#s2 h2{font-size:118px;margin:44px 0 56px;line-height:1.04}
+#s2 p{font:500 32px/1.45 var(--sans);max-width:1000px;opacity:.85}
+
+/* ===== 3. Agenda ===== */
+#s3{display:grid;grid-template-columns:620px 1fr;gap:100px;align-items:center}
+#s3 h2{font-size:150px;margin-top:40px}
+#s3 ol{list-style:none}
+#s3 li{position:relative;display:grid;grid-template-columns:150px 1fr auto;align-items:center;padding:42px 0}
+#s3 li .rule{position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--ink);opacity:.25;transform-origin:0 0}
+#s3 li .n{font:italic 500 64px/1 var(--serif);color:var(--croc)}
+#s3 li .t{font:600 46px/1.1 var(--sans);letter-spacing:-.01em}
+#s3 li .tag{color:var(--mut)}
+
+/* ===== 4. KPI table ===== */
+#s4{display:grid;grid-template-columns:520px 1fr;gap:90px}
+#s4 h2{font-size:112px;margin:40px 0 0}
+#s4 .rank{margin-top:70px}
+#s4 .rank .lbl{font:600 22px/1.3 var(--sans);color:var(--mut);max-width:360px}
+#s4 .rank .big{font:italic 500 260px/1 var(--serif);color:var(--croc);display:flex;align-items:flex-start;height:270px;overflow:hidden}
+#s4 .rank .big small{font-size:110px;margin-top:30px;margin-right:8px}
+#s4 .rank .big .num{display:inline-block}
+#s4 .tabs{display:flex;gap:46px;position:relative;margin:30px 0 46px;font:700 30px/1 var(--sans)}
+#s4 .tabs span{opacity:.35;transition:opacity .5s;padding-bottom:18px}
+#s4 .tabs span.act{opacity:1}
+#s4 .tabs i{position:absolute;bottom:0;left:0;height:3px;background:var(--croc);width:100px}
+#s4 .thead,#s4 .row{display:grid;grid-template-columns:400px 230px 130px 170px 170px;align-items:center;padding:0 30px}
+#s4 .thead{font:700 18px/1 var(--sans);letter-spacing:.18em;color:var(--mut);padding-bottom:22px;border-bottom:1.5px solid rgba(13,31,22,.25)}
+#s4 .thead span:not(:first-child),#s4 .row span:not(:first-child){text-align:right}
+#s4 .tbody{position:relative;height:540px}
+#s4 .row{position:absolute;left:0;right:0;height:100px;font:500 30px/1 var(--sans);border-bottom:1px solid rgba(13,31,22,.12);font-variant-numeric:tabular-nums}
+#s4 .row .nm{font-weight:600;display:flex;align-items:center;gap:20px}
+#s4 .row .pos{font:italic 500 30px/1 var(--serif);color:var(--mut);width:34px}
+#s4 .row.me{color:var(--cream);border:0;z-index:2}
+#s4 .row.me::before{content:'';position:absolute;inset:-4px 0;background:var(--g);border-radius:18px;z-index:-1;box-shadow:0 30px 60px -25px rgba(11,59,38,.7)}
+#s4 .row.me .pos{color:var(--mint)}
+#s4 .row.me .nm::after{content:'это я';font:700 14px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;padding:7px 11px;border-radius:99px;background:var(--ball);color:var(--ink)}
+#s4 .nexthint{margin-top:34px;font:600 18px/1 var(--sans);letter-spacing:.12em;color:var(--mut)}
+
+/* ===== 5. Bars ===== */
+#s5 h2{font-size:104px;margin:36px 0 0;max-width:1200px}
+#s5 .legend{position:absolute;right:150px;top:150px;display:flex;gap:40px;font:600 22px/1 var(--sans)}
+#s5 .legend span{display:flex;align-items:center;gap:14px}
+#s5 .legend i{width:22px;height:22px;border-radius:6px}
+#s5 .groups{position:absolute;left:150px;right:150px;bottom:205px;height:430px;display:grid;grid-template-columns:repeat(4,1fr);gap:70px}
+#s5 .grp{display:flex;flex-direction:column;justify-content:flex-end;position:relative;border-bottom:1.5px solid rgba(244,239,228,.3)}
+#s5 .bars{display:flex;gap:22px;align-items:flex-end;height:330px;width:56%}
+#s5 .b{flex:1;border-radius:14px 14px 0 0;transform-origin:50% 100%;position:relative}
+#s5 .b.avg{background:rgba(244,239,228,.16)}
+#s5 .b.me{background:var(--ball)}
+#s5 .b em{position:absolute;left:-40px;right:-40px;white-space:nowrap;top:-46px;text-align:center;font:600 24px/1 var(--sans);font-style:normal;color:var(--cream);font-variant-numeric:tabular-nums}
+#s5 .gl{position:absolute;bottom:-62px;left:0;font:700 26px/1 var(--sans);letter-spacing:.06em}
+#s5 .delta{position:absolute;top:auto;bottom:24px;right:0;font:italic 500 58px/1 var(--serif);color:var(--mint)}
+
+/* ===== 6. Chart ===== */
+#s6{display:grid;grid-template-columns:560px 1fr;gap:80px;align-items:center}
+#s6 h2{font-size:108px;margin:40px 0 60px}
+#s6 .growth{font:italic 500 210px/1 var(--serif);color:var(--croc);letter-spacing:-.04em}
+#s6 .gcap{font:600 24px/1.4 var(--sans);color:var(--mut);margin-top:18px;max-width:420px}
+#s6 svg{width:100%;height:auto;overflow:visible}
+#s6 .grid line{stroke:var(--ink);stroke-opacity:.12;stroke-width:1.5}
+#s6 .lab{font:600 22px var(--sans);fill:var(--mut)}
+#s6 .val{font:700 26px var(--sans);fill:var(--ink)}
+#s6 .avg{fill:none;stroke:var(--ink);stroke-opacity:.35;stroke-width:4;stroke-dasharray:4 14;stroke-linecap:round}
+#s6 .mine{fill:none;stroke:var(--croc);stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+#s6 .area{fill:url(#gArea)}
+#s6 .dot{fill:var(--cream);stroke:var(--croc);stroke-width:7}
+
+/* ===== 7. How I sell ===== */
+#s7 h2{font-size:112px;margin:36px 0 0}
+#s7 .sub{position:absolute;right:150px;top:150px;font:500 26px/1.45 var(--sans);opacity:.75;max-width:520px;text-align:right}
+#s7 .cards{position:absolute;left:150px;right:150px;bottom:150px;display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+#s7 .card{background:var(--g2);border:1px solid rgba(244,239,228,.1);border-radius:30px;padding:40px 36px 36px;height:520px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+#s7 .card .n{font:italic 500 90px/1 var(--serif);color:var(--mint)}
+#s7 .card h3{font:700 36px/1.15 var(--sans);margin:auto 0 18px}
+#s7 .card p{font:500 23px/1.45 var(--sans);opacity:.78}
+#s7 .card .tag{margin-top:28px;align-self:flex-start;color:var(--ball);opacity:1}
+#s7 .card:nth-child(4){background:var(--cream);color:var(--ink)}
+#s7 .card:nth-child(4) .n{color:var(--croc)}
+#s7 .card:nth-child(4) .tag{color:var(--croc)}
+
+/* ===== 8. Case ===== */
+#s8{display:grid;grid-template-columns:760px 4px 1fr;gap:90px}
+#s8 h2{font-size:104px;margin:40px 0 64px}
+#s8 table{border-collapse:collapse;width:100%;font:500 28px/1 var(--sans);font-variant-numeric:tabular-nums}
+#s8 th{font:700 17px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--mut);text-align:right;padding:0 0 22px}
+#s8 th:first-child,#s8 td:first-child{text-align:left}
+#s8 td{padding:26px 0;border-top:1.5px solid rgba(13,31,22,.14);text-align:right}
+#s8 tr.hl td{color:var(--croc);font-weight:800}
+#s8 .vline{background:repeating-linear-gradient(to bottom,var(--ink) 0 14px,transparent 14px 28px);opacity:.4;transform-origin:50% 0;width:3px}
+#s8 .blocks{display:flex;flex-direction:column;justify-content:center;gap:46px}
+#s8 .blk h4{font:800 20px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--croc);margin-bottom:18px}
+#s8 .blk li{font:500 27px/1.42 var(--sans);list-style:none;padding-left:34px;position:relative;margin-bottom:8px}
+#s8 .blk li::before{content:'';position:absolute;left:0;top:.6em;width:14px;height:2px;background:var(--ink)}
+#s8 .res{display:flex;gap:26px;margin-top:6px}
+#s8 .res div{background:var(--g);color:var(--cream);border-radius:22px;padding:24px 30px}
+#s8 .res b{display:block;font:italic 500 58px/1 var(--serif);color:var(--ball)}
+#s8 .res span{font:600 18px/1.3 var(--sans);opacity:.8}
+
+/* ===== 9. Product ===== */
+#s9 .ghost{position:absolute;right:-60px;bottom:-90px;font:italic 500 520px/1 var(--serif);color:transparent;-webkit-text-stroke:2px rgba(244,239,228,.1);white-space:nowrap;pointer-events:none}
+#s9 h2{font-size:112px;margin:36px 0 26px}
+#s9 .lead{font:500 28px/1.45 var(--sans);opacity:.8;max-width:980px}
+#s9 .code{display:flex;gap:28px;margin-top:80px}
+#s9 .ch{width:300px;border-top:2px solid rgba(244,239,228,.35);padding-top:28px;perspective:800px}
+#s9 .ch b{display:block;font:500 150px/1 var(--serif);color:var(--cream)}
+#s9 .ch b.dotc{color:var(--mint)}
+#s9 .ch span{display:block;font:600 24px/1.35 var(--sans);opacity:.78;margin-top:20px}
+#s9 .facts{position:absolute;left:150px;bottom:150px;display:flex;gap:70px;font:500 24px/1.4 var(--sans)}
+#s9 .facts div{max-width:430px;opacity:.85}
+#s9 .facts b{display:block;font:italic 500 46px/1 var(--serif);color:var(--mint);margin-bottom:10px}
+
+/* ===== 10. Plan ===== */
+#s10 h2{font-size:112px;margin:36px 0 0}
+#s10 .track{position:absolute;left:150px;right:150px;top:520px;height:3px;background:var(--ink);opacity:.85;transform-origin:0 50%}
+#s10 .nodes{position:absolute;left:150px;right:150px;top:488px;display:grid;grid-template-columns:repeat(3,1fr)}
+#s10 .node .pt{width:68px;height:68px;border-radius:50%;background:var(--cream);border:3px solid var(--ink);display:grid;place-items:center}
+#s10 .node .pt i{width:26px;height:26px;border-radius:50%;background:var(--croc)}
+#s10 .node .d{font:italic 500 96px/1 var(--serif);color:var(--croc);margin:42px 0 18px}
+#s10 .node .d small{font:700 22px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;font-style:normal;color:var(--mut);margin-left:12px}
+#s10 .node h3{font:700 34px/1.2 var(--sans);margin-bottom:14px;max-width:480px}
+#s10 .node p{font:500 24px/1.45 var(--sans);color:var(--mut);max-width:470px}
+
+/* ===== 11. Final ===== */
+#s11{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+#s11 .merci{font:italic 500 380px/1 var(--serif);letter-spacing:-.04em;display:flex;align-items:flex-end;position:relative}
+#s11 .merci .slot{width:120px;height:120px;position:relative;margin-left:14px;margin-bottom:46px}
+#s11 .merci .ball{position:absolute;left:0;top:0;width:110px;height:110px}
+#s11 .who{font:600 34px/1.3 var(--sans);margin-top:40px}
+#s11 .who span{display:block;font:600 22px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;opacity:.6;margin-top:22px}
+#s11 .flogo{width:300px;height:53px;margin-top:56px}
+#hud .hlogo{width:170px;height:30px;flex:none}
+#hud .hname{opacity:.7}
+#hud{--lc-word:currentColor;--lc-croc:currentColor;--lc-mouth:currentColor}
+#hud.oncream{--lc-word:#181713;--lc-croc:#06532a;--lc-mouth:#d30018}
+#s11 .court2{position:absolute;inset:0;pointer-events:none;opacity:.5}
+#s11 .court2 *{fill:none;stroke:var(--cream);stroke-width:2;opacity:.25}
+</style>
+<div id="rotate"><div class="ph"></div><h3>Поверни телефон</h3><p>Презентация горизонтальная. Листать — тапом по экрану или свайпом.</p><button type="button" id="skiprot">Смотреть вертикально</button></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="lcl" viewBox="0 0 474.54 84.11"><path class="lc-croc" d="M412.2 41.21c-.22.9-.43 1.83-.63 2.77-.05.23-.27.34-.49.22-1.02-.5-2.1-1.02-3.26-1.58-.25-.11-.25-.32 0-.43 1.26-.6 2.6-1.04 3.98-1.3.28-.05.45.09.39.31m-6.16-2.14c-.22.9-.43 1.83-.62 2.77-.06.23-.27.34-.48.23-1.03-.5-2.11-1.03-3.26-1.58-.25-.12-.25-.32 0-.44 1.25-.61 2.59-1.05 3.98-1.3.27-.05.45.09.39.31m-1.94 8.65c-.05.23-.26.33-.48.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.12-.25-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.31.28-.05.46.1.4.32-.23.9-.43 1.83-.64 2.77M399.56 38c-.22.9-.43 1.82-.63 2.77-.05.23-.26.34-.48.23-1.02-.51-2.1-1.03-3.25-1.58-.26-.12-.26-.32-.01-.44 1.26-.61 2.6-1.05 3.98-1.31.27-.04.45.1.39.32m-1.3 5.71c-.22.9-.43 1.82-.63 2.77-.05.23-.26.34-.48.23-1.02-.5-2.1-1.03-3.26-1.58-.25-.12-.25-.32 0-.44 1.26-.6 2.6-1.04 3.98-1.3.27-.05.45.1.39.32m-1.29 5.83c-.23.9-.44 1.82-.63 2.77-.05.23-.26.34-.48.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.12-.25-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.3.27-.05.46.1.4.32m-4.78-8.9c-.04.23-.26.34-.48.23-1.03-.51-2.1-1.03-3.26-1.58-.25-.12-.26-.31 0-.44 1.26-.61 2.6-1.05 3.98-1.3.27-.05.45.09.39.32-.23.9-.43 1.82-.64 2.76m-.65 2.9c-.22.91-.43 1.82-.63 2.77-.06.22-.27.33-.49.22-1.02-.5-2.1-1.03-3.25-1.57-.25-.12-.25-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.31.28-.05.46.1.4.32m-1.26 5.76c-.22.9-.43 1.82-.63 2.77-.05.23-.27.33-.48.23-1.02-.5-2.1-1.03-3.26-1.57-.25-.12-.25-.32 0-.43 1.26-.61 2.59-1.05 3.98-1.31.27-.05.45.1.39.32m-5.28-7.87c-1.03-.49-2.11-1.03-3.26-1.57-.24-.12-.25-.32 0-.44 1.26-.6 2.6-1.04 3.99-1.3.27-.05.45.1.39.32-.22.9-.44 1.83-.63 2.77-.05.22-.26.33-.48.22m-.21 2.76c-.22.9-.44 1.82-.63 2.77-.05.23-.27.34-.48.23-1.03-.5-2.1-1.03-3.26-1.57-.25-.12-.26-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.31.27-.04.45.1.39.32m-1.26 5.8c-.22.9-.43 1.82-.63 2.77-.05.23-.26.33-.48.23-1.03-.5-2.1-1.03-3.26-1.58-.25-.12-.25-.32-.01-.44 1.27-.61 2.6-1.05 3.99-1.3.27-.05.45.1.39.32m-5.39-7.41c-1.03-.5-2.11-1.03-3.25-1.58-.25-.11-.26-.31 0-.43 1.26-.61 2.6-1.04 3.98-1.3.27-.05.45.1.4.32a63 63 0 0 0-.63 2.77c-.05.24-.27.34-.48.23m-.92 5.83c-.05.23-.26.33-.48.23-1.02-.5-2.11-1.03-3.25-1.58-.24-.11-.26-.31 0-.43 1.26-.61 2.6-1.05 3.98-1.3.27-.05.46.09.4.32-.22.9-.44 1.83-.64 2.77m-1.31 5.79c-.05.23-.26.33-.48.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.11-.26-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.3.27-.05.45.1.4.32-.23.9-.44 1.82-.64 2.77m-4.08-10.32c-.05.23-.26.34-.48.23-1.03-.5-2.1-1.02-3.26-1.58-.25-.11-.26-.32 0-.43 1.26-.61 2.6-1.04 3.98-1.3.28-.05.45.1.4.32-.22.9-.44 1.82-.63 2.76m-.81 3.56c-.22.9-.44 1.82-.63 2.77-.05.22-.27.34-.49.22-1.02-.5-2.1-1.03-3.25-1.57-.25-.12-.25-.32 0-.44 1.26-.61 2.6-1.04 3.98-1.3.27-.05.46.1.4.32m-1.32 5.99q-.33 1.35-.63 2.76c-.05.23-.26.34-.48.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.11-.25-.31 0-.43 1.26-.61 2.6-1.05 3.99-1.3.27-.05.45.1.39.32m-5.14-7.44c-1.03-.5-2.11-1.03-3.26-1.57-.25-.12-.25-.32 0-.44 1.26-.6 2.6-1.05 3.98-1.31.28-.04.45.1.4.32-.23.9-.44 1.83-.63 2.77-.05.23-.26.34-.48.23m-.29 3.1c-.22.9-.44 1.83-.63 2.77-.05.23-.26.34-.48.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.11-.26-.31 0-.44 1.26-.6 2.6-1.05 3.98-1.3.28-.05.46.1.4.32m-5.9-2.85c-.05.23-.26.33-.48.23-1.02-.51-2.1-1.03-3.26-1.58-.25-.12-.25-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.3.27-.06.45.09.39.31-.23.91-.43 1.83-.63 2.77m-1.31 5.82c-.05.23-.27.34-.49.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.12-.26-.32 0-.44 1.26-.6 2.6-1.04 3.98-1.3.27-.05.45.1.4.32-.23.9-.44 1.82-.64 2.77m-6.26-11.2c-.24-.11-.25-.32 0-.43 1.26-.61 2.6-1.05 3.98-1.31.27-.05.45.1.4.32-.22.9-.44 1.83-.63 2.77-.05.23-.26.33-.48.22-1.02-.5-2.1-1.03-3.26-1.57m.34 8.14c-.05.23-.26.34-.48.23-1.02-.5-2.1-1.03-3.26-1.57-.24-.12-.25-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.3.28-.06.46.09.4.31-.23.91-.44 1.83-.64 2.77m-7.07-6.65c-.25-.12-.26-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.31.27-.05.45.1.4.32-.23.9-.44 1.83-.64 2.77-.05.23-.26.34-.48.23-1.02-.5-2.11-1.03-3.25-1.57m-.72-5.96a16 16 0 0 1 3.99-1.3c.27-.06.45.09.39.31-.23.9-.44 1.83-.63 2.77-.05.23-.27.34-.48.23-1.03-.5-2.1-1.03-3.26-1.57-.25-.11-.25-.31 0-.44m1.55-5.47c1.26-.61 2.6-1.04 3.98-1.3.27-.05.45.09.4.31-.23.9-.44 1.83-.63 2.77-.05.23-.27.34-.49.23-1.02-.5-2.1-1.03-3.25-1.58-.24-.11-.25-.32 0-.43m4.13-4.75c1.25-.61 2.59-1.05 3.98-1.3.27-.05.45.1.39.32-.22.9-.43 1.82-.63 2.77-.05.23-.27.34-.49.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.12-.25-.32 0-.43m5.47 7.87c-.23.9-.44 1.82-.64 2.77-.05.23-.26.35-.48.23-1.02-.5-2.1-1.03-3.26-1.58-.24-.11-.25-.31 0-.44 1.26-.61 2.61-1.04 3.98-1.3.27-.05.45.09.39.31m2.53-5.24c.28-.05.46.09.4.32-.22.9-.43 1.82-.63 2.77-.04.23-.26.34-.48.23-1.02-.51-2.11-1.03-3.26-1.58-.25-.11-.26-.32 0-.44 1.26-.61 2.59-1.05 3.98-1.3m-2.6-6.26c1.26-.61 2.59-1.05 3.98-1.3.27-.05.45.1.39.32-.22.9-.44 1.82-.63 2.77-.05.23-.26.34-.48.23-1.03-.5-2.1-1.03-3.26-1.57-.25-.11-.26-.32 0-.44m6.03-2.85c1.26-.61 2.6-1.04 3.98-1.31.27-.05.45.1.39.32-.23.9-.44 1.82-.63 2.77-.05.23-.26.34-.48.23-1.03-.5-2.1-1.03-3.26-1.57-.25-.11-.26-.32 0-.44m76.22 16.87c1.84 0 2.97 1.41 3.17 2.05 0 0-2.76.61-3.96.87-.79.17-1.3-.17-1.38-.79-.1-.69.64-2.14 2.17-2.13m6.82.21c.28-.72.88-1.22 1.49-1.22 1.1 0 1.62 1.2 1.62 1.56l-2.65.59c-.74.14-.72-.26-.46-.94m29.74 22.38c-1.14-.72-2.13-.81-3.17-1.12-1.41-.42-1.86-2.15-2.38-2.35-1.05-.4-2.02 1.2-2.66.99-.64-.2-.9-2.32-1.42-2.51-1.01-.38-2.11 1.23-2.75 1.03s-.98-2.29-1.5-2.48c-1.06-.39-2.14 1.29-2.78 1.08-.64-.2-.81-2.37-1.34-2.57-1.13-.43-2.16 1.29-3.16 1.13-.63-.1-2.02-.33-3.84-1.55-.52-.35-1.6-1.22-1.69-1.25-.18-.07-.65-.19-.54.75.26 2.2 4.06 3.79 8.42 5.05 4.35 1.25 8.77 2.47 11.4 3.69 1.63.75 2.33 1.65 1.74 2.52-.45.67-1.57.72-2.79.14-1.3-.62-1.44-1.65-2.25-1.84-1.01-.24-2.28 1.67-3.08 1.49-1.02-.24-1.14-2.43-2.04-2.67-1.2-.32-2.53 1.53-3.32 1.36-.79-.16-1.09-2.51-1.84-2.7-1.26-.33-2.54 1.62-3.34 1.45-.79-.16-1.23-2.47-1.9-2.74-1.26-.51-2.93 1.39-4.67.47-5.63-3.8-4.55-5.76-8.85-7.03-2.22-.65-4.99.14-6.61.31-3.81.4-3.66-2.9-3.66-2.9 1.1.26 2.65.96 5.5-.1 3.08-1.14 4.8-1.34 8.81 0 3.39 1.14 5.4.12 6.58-.18.58-.15 1.03-.47 2.12.23 1.1.7 2.15 1.47 2.69 1.21.83-.41.53-2.63 1.97-3.1.65-.22 2.44 1.57 3.22 1.27s.54-2.63 1.97-3.1c.66-.22 2.44 1.57 3.22 1.27.79-.31.54-2.63 1.97-3.11.66-.21 2.45 1.57 3.22 1.28.78-.31.55-2.63 1.97-3.11.65-.21 2.45 1.58 3.22 1.28.78-.31.67-.9 1.3-2.48.12-.31.35-.62.67-.88.87-.71 2.19-2.24 1.41-3.95-.71-1.55-2.16-1.5-5.36-.84-2.69.55-19.38 4.23-19.38 4.23-2.61-4.82-4.37-1.64-8.23-2.1-2.45-.3-6.41-2.79-12.67 2.99-3.37-.96-6.34-.11-8.56 1.13-3.76-1.53-10.92-5.2-24.54-5.2-3.85 0-13.04.76-27.66 4.61-3.74.99-7.16.77-7.99-1.45-.86-2.33 2.14-4.76 7.79-7.47 14.03-6.72 23.4-5.14 42.26-15.13 10.11-5.35 10.77-11.63 10.77-13.15 0-1.04-1.06-1.39-1.67-.54-3.4 4.75-4.28 4.35-5.33 3.3-1.42-1.42-2.37.83-3.89 1.96-1.16.86-1.39-.18-2.32-.78-1.6-1.03-2.94 2.02-4.31 2.63-1.59.71-1.88-.08-2.42-.64-.38-.4-1.07-.39-1.56.08-3.22 3.06-3.69 2.71-4.65 1.69-.71-.76-1.1-1.28-3.18.82-1.2 1.22-3.21 2.66-3.82 1.14s-1.14-2.41-4.09.28c-1.75 1.59-2.94 1.72-3.47.97-.53-.76-.45-2.83-3.21-.65-2.48 1.95-3.72 3.12-4.54 1.24-.79-1.82-2.61-.29-3.99 1.03-.73.7-1.93 2.34-2.9.67-.97-1.66-2.52.06-4.5 2.16-1.12 1.18-1.87.66-2.97-.12-1.27-.91-2.62 2.35-4.47 4.3-.35.32-.85.56-1.97-.22-1.44-.99-3.72 4.07-4.37 5.31-1.06 2-2.23-.52-3.47 1.28-2.88 4.22-5.97 8.91-6.84 17.2-1.05 9.93 2.63 18.01 6.37 20.99 0 0-.45 1.11-.98 2.51-1.04 2.8-1.47 6.43-.14 8.98 1.3 2.46 4.33 6.55 5.46 2.69.55-1.88 1.06-1.78 2.87-.5 2.73 1.92 2.06-1.59 2.61-2.62.38-.73.86-1.01 3.11.47 1.3.84 1.71-.3 2.09-1.9 1.19-4.95-1.15-6.17-3.46-6.63-1.68-.34-3.45-.06-3.45-.06 3.68-5.61 4.14-8.68 0-11.51.62-.31 1.12-.14 1.65.08 1.02.43 1.87 1.21 2.41 2.16.57 1.01 1.51 3.26-.39 7.25.79 0 3.84.19 5.22 3.32 1.81.58 13.48 1.51 18.58.69 1.85-.3 2.69-1.97 4.54-3.7 2.02-1.88 4.36-3.92 6.45-2.39-3.56 1.46-6.07 4.23-6.07 7.75 0 2.64 1.09 3.7 2.97 5.27 1.71 1.42 2.24 3.67 2.86 5.42.8 2.23 2.48 2.3 2.85.18.51-2.92 1.4-2.38 2.53-1.13 1.38 1.52 2.45 1.28 2.45-.9 0-2.06.62-3.08 2.93-.7.94.97 2.06.93 2.04-1.18-.02-2.57 1.13-2.33 2.57-1.22.5.38.85.66 1.12.65 1.14-.06 1.88-2.27 1.01-4.01-.43-.87-1.07-2.18-6.96-3.39-1.93-.4-1.6-1.74-1.6-1.74 14.38.7 26.56-1.11 34.57-5.98 9.85 2.37 24.25 2.6 28.98 2.54 4.72-.06 8.34-.27 11.3-1.69 3.12-1.5 2.65-3.78 1.21-4.68"/><path class="lc-mouth" d="M437.73 46.79c-4.01-1.34-5.73-1.14-8.81 0-2.85 1.06-4.4.36-5.5.1 0 0-.15 3.29 3.66 2.9 1.62-.17 4.39-.97 6.61-.31 4.3 1.27 3.22 3.24 8.85 7.04 1.74.92 3.42-.98 4.67-.47.67.27 1.11 2.58 1.9 2.74.79.17 2.08-1.78 3.34-1.45.75.19 1.04 2.54 1.84 2.7.79.17 2.12-1.68 3.32-1.36.9.24 1.02 2.43 2.04 2.67.8.18 2.07-1.73 3.07-1.49.82.19.95 1.22 2.25 1.84 1.22.58 2.33.53 2.79-.14.59-.87-.11-1.77-1.74-2.52-2.63-1.21-7.04-2.43-11.4-3.69s-8.15-2.85-8.42-5.05c-.11-.93.34-.83.53-.76-1.68-1.24-2.02-2.42-1.94-3.07-.16.04-.32.1-.48.14-1.18.3-3.19 1.32-6.58.18"/><path class="lc-word" d="m44.9 51.63-2.3-.45c-.36-.09-.45 0-.54.27-3.86 12.02-9.42 16.41-18.2 16.41-2.87 0-6.19-.63-8.61-1.79V19.52c0-7.08 2.69-7.44 6.19-7.44h.09c.27 0 .45-.18.45-.45v-1.61c0-.27-.18-.45-.45-.45H.45c-.27 0-.45.18-.45.45v1.61c0 .27.18.45.45.45h.09c3.5 0 6.19.36 6.19 7.44v41.25c0 7.09-2.69 7.44-6.19 7.44H.45c-.27 0-.45.18-.45.45v1.61c0 .27.18.45.45.45h38.84c.18 0 .39-.17.45-.36l5.52-18.2c.09-.36 0-.45-.36-.54M135.91 53.42l-1.88-.72c-.18-.09-.45 0-.54.18-3.68 7.53-8.7 13.54-17.22 13.54-11.93 0-16.68-12.47-16.68-26.36 0-5.29.54-27.8 15.78-27.8 9.59 0 12.82 9.24 14.8 18.47.09.27.27.36.54.36l1.97-.27c.36-.09.45-.27.45-.54l-1.7-18.38c0-.18-.18-.45-.45-.45-1.17.09-3.05.09-5.02-.54-3.14-1.08-6.46-2.51-10.49-2.51-15.51 0-24.66 14.08-24.66 30.58 0 18.92 8.79 32.91 23.4 32.91 9.33 0 17.22-4.66 21.97-17.94.09-.27-.09-.45-.27-.54M162.15 68.75c-9.6 0-14.35-12.46-14.35-28.42s4.75-28.97 14.35-28.97 14.53 13 14.53 28.97-4.84 28.42-14.53 28.42m.09-60.35c-14.71 0-23.67 14.35-23.67 31.93s8.97 31.57 23.67 31.57 23.58-13.99 23.58-31.57S176.85 8.4 162.24 8.4M268.66 9.57h-39.01c-.18 0-.45.27-.45.45l-1.16 16.23c0 .27.18.54.45.54l1.88.18c.27 0 .45-.09.54-.36 1.07-5.92 2.15-8.88 4.03-10.85 1.97-2.06 4.84-3.23 9.95-3.23v48.24c0 7.08-2.69 7.44-6.19 7.44h-.09c-.27 0-.45.18-.45.45v1.61c0 .27.18.45.45.45h21.07c.27 0 .45-.18.45-.45v-1.61c0-.27-.18-.45-.45-.45h-.09c-3.5 0-6.19-.36-6.19-7.44V12.53c5.11 0 7.98 1.17 9.95 3.23 1.88 1.97 2.96 4.93 4.04 10.85.09.27.27.36.54.36l1.88-.18c.27 0 .45-.27.45-.54l-1.17-16.23c0-.18-.27-.45-.45-.45M317.75 51.93l-1.79-.45c-.36-.09-.45 0-.54.27-3.5 10.4-8.79 16.11-17.58 16.11-2.6 0-6.01-.63-8.7-1.79V40.16h3.32c6.91 0 8.97 3.77 9.06 10.22 0 .27.18.45.45.45h1.7c.27 0 .45-.18.45-.45V27.34c0-.27-.18-.45-.45-.45h-1.7c-.27 0-.45.18-.45.45-.09 6.37-2.15 9.77-9.06 9.77h-3.32V12.62h8.88c9.24 0 11.75 4.22 14.08 13.99.09.27.18.36.45.36l1.8-.27c.27 0 .36-.18.36-.45l-1.08-16.23c0-.18-.27-.45-.45-.45h-38.83c-.27 0-.45.18-.45.45v1.61c0 .27.18.45.45.45h.09c3.5 0 6.19.36 6.19 7.44v41.25c0 7.08-2.69 7.44-6.19 7.44h-.09c-.27 0-.45.18-.45.45v1.61c0 .27.18.45.45.45h39.19c.18 0 .45-.18.45-.36l4.12-17.9c.09-.36 0-.45-.36-.54M211.21 34.68c-7.35-3.77-14.71-7.8-14.71-14.26 0-4.93 4.04-8.52 9.42-8.52 9.77 0 11.93 6.55 14.53 14.8.09.18.21.27.54.27l1.93-.18c.29-.05.36-.27.36-.45l-1.56-15.94c-.02-.3-.21-.54-.54-.47-.53.12-1.46.36-2.74.36-3.49 0-5.25-1.88-12.07-1.88-8.88 0-16.23 5.74-16.23 15.15s7.8 14.71 16.14 19.19c7.35 3.94 13.54 7.8 13.54 14.71 0 9.6-7.89 10.67-10.67 10.67-10.22-.18-13.81-7.8-17.13-17.84-.09-.27-.27-.36-.63-.27l-1.88.36c-.27.09-.36.27-.36.54l2.69 19.46c0 .27.36.54.72.36 1.52-.54 2.78-.81 4.12-.81 3.95 0 5.47 2.06 12.73 2.06 8.7 0 17.66-5.74 17.66-16.77 0-9.68-6.54-15.6-15.87-20.53M57.78 46.92l7.63-23.09 8.94 23.09H57.79Zm38.35 21.3c-2.12-.34-5.03-2.18-8.01-9.33L68.86 9.84c-.09-.18-.18-.27-.36-.27h-8.08c-.6 0-.8.39-.47.88.34.5.76 1.25 1.17 2.32.04.1 1.33 3.45 1.33 3.45l.04.1c.59 1.52.63 3.21.12 4.76l-12.52 37.8c-2.35 6.4-3.94 9.1-7.17 9.33-.36 0-.54.27-.54.54v1.44c0 .3.24.54.54.54h14.62c.3 0 .54-.24.54-.54v-1.44c0-.27-.18-.54-.54-.54-5.11-.18-5.83-2.42-4.3-7.53l3.42-10.36h19.01l3.94 10.18c2.28 5.38-.72 7.44-5.02 7.71-.27 0-.45.27-.45.54v1.44c0 .3.24.54.54.54h21.37c.3 0 .54-.24.54-.54v-1.44c0-.27-.18-.54-.45-.54"/></symbol><symbol id="lcroc" viewBox="333 0 141.54 84.11"><path class="lc-croc" d="M412.2 41.21c-.22.9-.43 1.83-.63 2.77-.05.23-.27.34-.49.22-1.02-.5-2.1-1.02-3.26-1.58-.25-.11-.25-.32 0-.43 1.26-.6 2.6-1.04 3.98-1.3.28-.05.45.09.39.31m-6.16-2.14c-.22.9-.43 1.83-.62 2.77-.06.23-.27.34-.48.23-1.03-.5-2.11-1.03-3.26-1.58-.25-.12-.25-.32 0-.44 1.25-.61 2.59-1.05 3.98-1.3.27-.05.45.09.39.31m-1.94 8.65c-.05.23-.26.33-.48.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.12-.25-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.31.28-.05.46.1.4.32-.23.9-.43 1.83-.64 2.77M399.56 38c-.22.9-.43 1.82-.63 2.77-.05.23-.26.34-.48.23-1.02-.51-2.1-1.03-3.25-1.58-.26-.12-.26-.32-.01-.44 1.26-.61 2.6-1.05 3.98-1.31.27-.04.45.1.39.32m-1.3 5.71c-.22.9-.43 1.82-.63 2.77-.05.23-.26.34-.48.23-1.02-.5-2.1-1.03-3.26-1.58-.25-.12-.25-.32 0-.44 1.26-.6 2.6-1.04 3.98-1.3.27-.05.45.1.39.32m-1.29 5.83c-.23.9-.44 1.82-.63 2.77-.05.23-.26.34-.48.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.12-.25-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.3.27-.05.46.1.4.32m-4.78-8.9c-.04.23-.26.34-.48.23-1.03-.51-2.1-1.03-3.26-1.58-.25-.12-.26-.31 0-.44 1.26-.61 2.6-1.05 3.98-1.3.27-.05.45.09.39.32-.23.9-.43 1.82-.64 2.76m-.65 2.9c-.22.91-.43 1.82-.63 2.77-.06.22-.27.33-.49.22-1.02-.5-2.1-1.03-3.25-1.57-.25-.12-.25-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.31.28-.05.46.1.4.32m-1.26 5.76c-.22.9-.43 1.82-.63 2.77-.05.23-.27.33-.48.23-1.02-.5-2.1-1.03-3.26-1.57-.25-.12-.25-.32 0-.43 1.26-.61 2.59-1.05 3.98-1.31.27-.05.45.1.39.32m-5.28-7.87c-1.03-.49-2.11-1.03-3.26-1.57-.24-.12-.25-.32 0-.44 1.26-.6 2.6-1.04 3.99-1.3.27-.05.45.1.39.32-.22.9-.44 1.83-.63 2.77-.05.22-.26.33-.48.22m-.21 2.76c-.22.9-.44 1.82-.63 2.77-.05.23-.27.34-.48.23-1.03-.5-2.1-1.03-3.26-1.57-.25-.12-.26-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.31.27-.04.45.1.39.32m-1.26 5.8c-.22.9-.43 1.82-.63 2.77-.05.23-.26.33-.48.23-1.03-.5-2.1-1.03-3.26-1.58-.25-.12-.25-.32-.01-.44 1.27-.61 2.6-1.05 3.99-1.3.27-.05.45.1.39.32m-5.39-7.41c-1.03-.5-2.11-1.03-3.25-1.58-.25-.11-.26-.31 0-.43 1.26-.61 2.6-1.04 3.98-1.3.27-.05.45.1.4.32a63 63 0 0 0-.63 2.77c-.05.24-.27.34-.48.23m-.92 5.83c-.05.23-.26.33-.48.23-1.02-.5-2.11-1.03-3.25-1.58-.24-.11-.26-.31 0-.43 1.26-.61 2.6-1.05 3.98-1.3.27-.05.46.09.4.32-.22.9-.44 1.83-.64 2.77m-1.31 5.79c-.05.23-.26.33-.48.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.11-.26-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.3.27-.05.45.1.4.32-.23.9-.44 1.82-.64 2.77m-4.08-10.32c-.05.23-.26.34-.48.23-1.03-.5-2.1-1.02-3.26-1.58-.25-.11-.26-.32 0-.43 1.26-.61 2.6-1.04 3.98-1.3.28-.05.45.1.4.32-.22.9-.44 1.82-.63 2.76m-.81 3.56c-.22.9-.44 1.82-.63 2.77-.05.22-.27.34-.49.22-1.02-.5-2.1-1.03-3.25-1.57-.25-.12-.25-.32 0-.44 1.26-.61 2.6-1.04 3.98-1.3.27-.05.46.1.4.32m-1.32 5.99q-.33 1.35-.63 2.76c-.05.23-.26.34-.48.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.11-.25-.31 0-.43 1.26-.61 2.6-1.05 3.99-1.3.27-.05.45.1.39.32m-5.14-7.44c-1.03-.5-2.11-1.03-3.26-1.57-.25-.12-.25-.32 0-.44 1.26-.6 2.6-1.05 3.98-1.31.28-.04.45.1.4.32-.23.9-.44 1.83-.63 2.77-.05.23-.26.34-.48.23m-.29 3.1c-.22.9-.44 1.83-.63 2.77-.05.23-.26.34-.48.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.11-.26-.31 0-.44 1.26-.6 2.6-1.05 3.98-1.3.28-.05.46.1.4.32m-5.9-2.85c-.05.23-.26.33-.48.23-1.02-.51-2.1-1.03-3.26-1.58-.25-.12-.25-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.3.27-.06.45.09.39.31-.23.91-.43 1.83-.63 2.77m-1.31 5.82c-.05.23-.27.34-.49.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.12-.26-.32 0-.44 1.26-.6 2.6-1.04 3.98-1.3.27-.05.45.1.4.32-.23.9-.44 1.82-.64 2.77m-6.26-11.2c-.24-.11-.25-.32 0-.43 1.26-.61 2.6-1.05 3.98-1.31.27-.05.45.1.4.32-.22.9-.44 1.83-.63 2.77-.05.23-.26.33-.48.22-1.02-.5-2.1-1.03-3.26-1.57m.34 8.14c-.05.23-.26.34-.48.23-1.02-.5-2.1-1.03-3.26-1.57-.24-.12-.25-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.3.28-.06.46.09.4.31-.23.91-.44 1.83-.64 2.77m-7.07-6.65c-.25-.12-.26-.32 0-.44 1.26-.61 2.6-1.05 3.98-1.31.27-.05.45.1.4.32-.23.9-.44 1.83-.64 2.77-.05.23-.26.34-.48.23-1.02-.5-2.11-1.03-3.25-1.57m-.72-5.96a16 16 0 0 1 3.99-1.3c.27-.06.45.09.39.31-.23.9-.44 1.83-.63 2.77-.05.23-.27.34-.48.23-1.03-.5-2.1-1.03-3.26-1.57-.25-.11-.25-.31 0-.44m1.55-5.47c1.26-.61 2.6-1.04 3.98-1.3.27-.05.45.09.4.31-.23.9-.44 1.83-.63 2.77-.05.23-.27.34-.49.23-1.02-.5-2.1-1.03-3.25-1.58-.24-.11-.25-.32 0-.43m4.13-4.75c1.25-.61 2.59-1.05 3.98-1.3.27-.05.45.1.39.32-.22.9-.43 1.82-.63 2.77-.05.23-.27.34-.49.23-1.02-.5-2.1-1.03-3.25-1.58-.25-.12-.25-.32 0-.43m5.47 7.87c-.23.9-.44 1.82-.64 2.77-.05.23-.26.35-.48.23-1.02-.5-2.1-1.03-3.26-1.58-.24-.11-.25-.31 0-.44 1.26-.61 2.61-1.04 3.98-1.3.27-.05.45.09.39.31m2.53-5.24c.28-.05.46.09.4.32-.22.9-.43 1.82-.63 2.77-.04.23-.26.34-.48.23-1.02-.51-2.11-1.03-3.26-1.58-.25-.11-.26-.32 0-.44 1.26-.61 2.59-1.05 3.98-1.3m-2.6-6.26c1.26-.61 2.59-1.05 3.98-1.3.27-.05.45.1.39.32-.22.9-.44 1.82-.63 2.77-.05.23-.26.34-.48.23-1.03-.5-2.1-1.03-3.26-1.57-.25-.11-.26-.32 0-.44m6.03-2.85c1.26-.61 2.6-1.04 3.98-1.31.27-.05.45.1.39.32-.23.9-.44 1.82-.63 2.77-.05.23-.26.34-.48.23-1.03-.5-2.1-1.03-3.26-1.57-.25-.11-.26-.32 0-.44m76.22 16.87c1.84 0 2.97 1.41 3.17 2.05 0 0-2.76.61-3.96.87-.79.17-1.3-.17-1.38-.79-.1-.69.64-2.14 2.17-2.13m6.82.21c.28-.72.88-1.22 1.49-1.22 1.1 0 1.62 1.2 1.62 1.56l-2.65.59c-.74.14-.72-.26-.46-.94m29.74 22.38c-1.14-.72-2.13-.81-3.17-1.12-1.41-.42-1.86-2.15-2.38-2.35-1.05-.4-2.02 1.2-2.66.99-.64-.2-.9-2.32-1.42-2.51-1.01-.38-2.11 1.23-2.75 1.03s-.98-2.29-1.5-2.48c-1.06-.39-2.14 1.29-2.78 1.08-.64-.2-.81-2.37-1.34-2.57-1.13-.43-2.16 1.29-3.16 1.13-.63-.1-2.02-.33-3.84-1.55-.52-.35-1.6-1.22-1.69-1.25-.18-.07-.65-.19-.54.75.26 2.2 4.06 3.79 8.42 5.05 4.35 1.25 8.77 2.47 11.4 3.69 1.63.75 2.33 1.65 1.74 2.52-.45.67-1.57.72-2.79.14-1.3-.62-1.44-1.65-2.25-1.84-1.01-.24-2.28 1.67-3.08 1.49-1.02-.24-1.14-2.43-2.04-2.67-1.2-.32-2.53 1.53-3.32 1.36-.79-.16-1.09-2.51-1.84-2.7-1.26-.33-2.54 1.62-3.34 1.45-.79-.16-1.23-2.47-1.9-2.74-1.26-.51-2.93 1.39-4.67.47-5.63-3.8-4.55-5.76-8.85-7.03-2.22-.65-4.99.14-6.61.31-3.81.4-3.66-2.9-3.66-2.9 1.1.26 2.65.96 5.5-.1 3.08-1.14 4.8-1.34 8.81 0 3.39 1.14 5.4.12 6.58-.18.58-.15 1.03-.47 2.12.23 1.1.7 2.15 1.47 2.69 1.21.83-.41.53-2.63 1.97-3.1.65-.22 2.44 1.57 3.22 1.27s.54-2.63 1.97-3.1c.66-.22 2.44 1.57 3.22 1.27.79-.31.54-2.63 1.97-3.11.66-.21 2.45 1.57 3.22 1.28.78-.31.55-2.63 1.97-3.11.65-.21 2.45 1.58 3.22 1.28.78-.31.67-.9 1.3-2.48.12-.31.35-.62.67-.88.87-.71 2.19-2.24 1.41-3.95-.71-1.55-2.16-1.5-5.36-.84-2.69.55-19.38 4.23-19.38 4.23-2.61-4.82-4.37-1.64-8.23-2.1-2.45-.3-6.41-2.79-12.67 2.99-3.37-.96-6.34-.11-8.56 1.13-3.76-1.53-10.92-5.2-24.54-5.2-3.85 0-13.04.76-27.66 4.61-3.74.99-7.16.77-7.99-1.45-.86-2.33 2.14-4.76 7.79-7.47 14.03-6.72 23.4-5.14 42.26-15.13 10.11-5.35 10.77-11.63 10.77-13.15 0-1.04-1.06-1.39-1.67-.54-3.4 4.75-4.28 4.35-5.33 3.3-1.42-1.42-2.37.83-3.89 1.96-1.16.86-1.39-.18-2.32-.78-1.6-1.03-2.94 2.02-4.31 2.63-1.59.71-1.88-.08-2.42-.64-.38-.4-1.07-.39-1.56.08-3.22 3.06-3.69 2.71-4.65 1.69-.71-.76-1.1-1.28-3.18.82-1.2 1.22-3.21 2.66-3.82 1.14s-1.14-2.41-4.09.28c-1.75 1.59-2.94 1.72-3.47.97-.53-.76-.45-2.83-3.21-.65-2.48 1.95-3.72 3.12-4.54 1.24-.79-1.82-2.61-.29-3.99 1.03-.73.7-1.93 2.34-2.9.67-.97-1.66-2.52.06-4.5 2.16-1.12 1.18-1.87.66-2.97-.12-1.27-.91-2.62 2.35-4.47 4.3-.35.32-.85.56-1.97-.22-1.44-.99-3.72 4.07-4.37 5.31-1.06 2-2.23-.52-3.47 1.28-2.88 4.22-5.97 8.91-6.84 17.2-1.05 9.93 2.63 18.01 6.37 20.99 0 0-.45 1.11-.98 2.51-1.04 2.8-1.47 6.43-.14 8.98 1.3 2.46 4.33 6.55 5.46 2.69.55-1.88 1.06-1.78 2.87-.5 2.73 1.92 2.06-1.59 2.61-2.62.38-.73.86-1.01 3.11.47 1.3.84 1.71-.3 2.09-1.9 1.19-4.95-1.15-6.17-3.46-6.63-1.68-.34-3.45-.06-3.45-.06 3.68-5.61 4.14-8.68 0-11.51.62-.31 1.12-.14 1.65.08 1.02.43 1.87 1.21 2.41 2.16.57 1.01 1.51 3.26-.39 7.25.79 0 3.84.19 5.22 3.32 1.81.58 13.48 1.51 18.58.69 1.85-.3 2.69-1.97 4.54-3.7 2.02-1.88 4.36-3.92 6.45-2.39-3.56 1.46-6.07 4.23-6.07 7.75 0 2.64 1.09 3.7 2.97 5.27 1.71 1.42 2.24 3.67 2.86 5.42.8 2.23 2.48 2.3 2.85.18.51-2.92 1.4-2.38 2.53-1.13 1.38 1.52 2.45 1.28 2.45-.9 0-2.06.62-3.08 2.93-.7.94.97 2.06.93 2.04-1.18-.02-2.57 1.13-2.33 2.57-1.22.5.38.85.66 1.12.65 1.14-.06 1.88-2.27 1.01-4.01-.43-.87-1.07-2.18-6.96-3.39-1.93-.4-1.6-1.74-1.6-1.74 14.38.7 26.56-1.11 34.57-5.98 9.85 2.37 24.25 2.6 28.98 2.54 4.72-.06 8.34-.27 11.3-1.69 3.12-1.5 2.65-3.78 1.21-4.68"/><path class="lc-mouth" d="M437.73 46.79c-4.01-1.34-5.73-1.14-8.81 0-2.85 1.06-4.4.36-5.5.1 0 0-.15 3.29 3.66 2.9 1.62-.17 4.39-.97 6.61-.31 4.3 1.27 3.22 3.24 8.85 7.04 1.74.92 3.42-.98 4.67-.47.67.27 1.11 2.58 1.9 2.74.79.17 2.08-1.78 3.34-1.45.75.19 1.04 2.54 1.84 2.7.79.17 2.12-1.68 3.32-1.36.9.24 1.02 2.43 2.04 2.67.8.18 2.07-1.73 3.07-1.49.82.19.95 1.22 2.25 1.84 1.22.58 2.33.53 2.79-.14.59-.87-.11-1.77-1.74-2.52-2.63-1.21-7.04-2.43-11.4-3.69s-8.15-2.85-8.42-5.05c-.11-.93.34-.83.53-.76-1.68-1.24-2.02-2.42-1.94-3.07-.16.04-.32.1-.48.14-1.18.3-3.19 1.32-6.58.18"/></symbol></defs></svg>
+<div id="stage">
+
+<!-- 1 · ОБЛОЖКА -->
+<section class="slide cream pique" id="s1">
+  <div class="panel mono" data-a="panel" data-d="0">
+  <svg class="pcroc" viewBox="0 0 141.54 84.11" data-a="croc" data-d="1.3"><use href="#lcroc" width="141.54" height="84.11"/></svg>
+  <div class="pcap" data-a="up" data-d="1.6">Paris · 1933</div>
+  <div class="court" data-px="-18">
+    <svg viewBox="-60 -60 1217 2497" data-a="draw" data-d="0.1" data-dur="2.4">
+      <rect x="0" y="0" width="1097" height="2377"/>
+      <line x1="137" y1="0" x2="137" y2="2377"/>
+      <line x1="960" y1="0" x2="960" y2="2377"/>
+      <line x1="137" y1="549" x2="960" y2="549"/>
+      <line x1="137" y1="1828" x2="960" y2="1828"/>
+      <line x1="548.5" y1="549" x2="548.5" y2="1828"/>
+      <line x1="548.5" y1="0" x2="548.5" y2="40"/>
+      <line x1="548.5" y1="2337" x2="548.5" y2="2377"/>
+      <line class="net" x1="-50" y1="1188.5" x2="1147" y2="1188.5"/>
+    </svg>
+  </div>
+  </div>
+  <div class="copy">
+    <svg class="biglogo" viewBox="0 0 474.54 84.11" data-a="reveal" data-d="0.3" role="img" aria-label="Lacoste"><use href="#lcl"/></svg>
+    <div class="kicker" data-a="up" data-d="0.9">Центр оценки · 2026</div>
+    <h1 data-a="lines" data-d="1.0"><span class="ln"><span>Матвеев</span></span><span class="ln"><span>Вадим</span></span><span class="ln"><span><em id="lastName">Владимирович</em></span></span></h1>
+    <div class="role" data-a="up" data-d="1.5">Кандидат на позицию <b>старшего продавца</b></div>
+  </div>
+  <div class="ballwrap" id="coverBall" data-px="30">
+    <div class="shadow" data-a="shadow" data-d="1.6"></div>
+    <div class="ball" data-a="drop" data-d="1.6"><svg viewBox="0 0 130 130"><path d="M22 18 C58 46 58 84 22 112"/><path d="M108 18 C72 46 72 84 108 112"/></svg></div>
+  </div>
+</section>
+
+<!-- 2 · ИДЕЯ -->
+<section class="slide dark" id="s2" data-wipe>
+  <div class="wall"><div>Piqué · 1933 · Tennis · Élégance · </div><div>Résultat · Paris · Le Crocodile · </div><div>L.12.12 · Sport · Style · </div><div>Piqué · 1933 · Tennis · Élégance · </div></div>
+  <div class="copy">
+    <div class="kicker" data-a="up">Идея</div>
+    <h2 data-a="words">Лучшая рекомендация продавца — его <em>собственные</em> цифры.</h2>
+    <p data-a="up" data-d="1.6">Три месяца личных KPI, система, за счёт которой они растут, и план — что я принесу магазину как старший продавец.</p>
+  </div>
+</section>
+
+<!-- 3 · СОДЕРЖАНИЕ -->
+<section class="slide cream" id="s3">
+  <div>
+    <div class="kicker" data-a="up">Содержание</div>
+    <h2 data-a="lines"><span class="ln"><span>Четыре</span></span><span class="ln"><span><em>сета</em></span></span></h2>
+  </div>
+  <ol>
+    <li><span class="n" data-a="up" data-d=".4">01</span><span class="t" data-a="up" data-d=".45">Мои KPI за 3 месяца</span><span class="tag" data-a="up" data-d=".5">NS · UPT · AUR · ATV</span><i class="rule" data-a="linex" data-d=".3"></i></li>
+    <li><span class="n" data-a="up" data-d=".55">02</span><span class="t" data-a="up" data-d=".6">Как я продаю</span><span class="tag" data-a="up" data-d=".65">система</span><i class="rule" data-a="linex" data-d=".45"></i></li>
+    <li><span class="n" data-a="up" data-d=".7">03</span><span class="t" data-a="up" data-d=".75">Кейс: рост UPT</span><span class="tag" data-a="up" data-d=".8">результат</span><i class="rule" data-a="linex" data-d=".6"></i></li>
+    <li><span class="n" data-a="up" data-d=".85">04</span><span class="t" data-a="up" data-d=".9">План на новой позиции</span><span class="tag" data-a="up" data-d=".95">30 · 60 · 90</span><i class="rule" data-a="linex" data-d=".75"></i></li>
+  </ol>
+</section>
+
+<!-- 4 · KPI ТАБЛИЦА (листается по месяцам) -->
+<section class="slide cream pique" id="s4" data-wipe>
+  <div>
+    <div class="kicker" data-a="up">01 · Личные KPI</div>
+    <h2 data-a="lines"><span class="ln"><span>KPI за</span></span><span class="ln"><span><em>3 месяца</em></span></span></h2>
+    <div class="rank" data-a="up" data-d=".7">
+      <div class="lbl">Место по личным продажам среди продавцов магазина</div>
+      <div class="big"><small>№</small><span class="num" id="rankNum">1</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="tabs" id="tabs" data-a="up" data-d=".4"></div>
+    <div class="thead" data-a="up" data-d=".5"><span>Сотрудник</span><span>NS, ₽</span><span>UPT</span><span>AUR, ₽</span><span>ATV, ₽</span></div>
+    <div class="tbody" id="tbody"></div>
+    <div class="nexthint" data-a="up" data-d="1.4">→ следующий месяц</div>
+  </div>
+</section>
+
+<!-- 5 · Я VS СРЕДНЕЕ -->
+<section class="slide dark pique" id="s5">
+  <div class="kicker" data-a="up">01 · <span id="s5month"></span></div>
+  <h2 data-a="lines"><span class="ln"><span>Я против среднего</span></span><span class="ln"><span><em>по магазину</em></span></span></h2>
+  <div class="legend" data-a="up" data-d=".5"><span><i style="background:rgba(244,239,228,.16)"></i>Среднее</span><span><i style="background:var(--ball)"></i>Матвеев В.</span></div>
+  <div class="groups" id="groups"></div>
+</section>
+
+<!-- 6 · ДИНАМИКА -->
+<section class="slide cream" id="s6">
+  <div>
+    <div class="kicker" data-a="up">01 · Динамика</div>
+    <h2 data-a="lines"><span class="ln"><span>Рост из месяца</span></span><span class="ln"><span><em>в месяц</em></span></span></h2>
+    <div class="growth" data-a="count" data-d=".8" id="growth" data-pre="+" data-suf="%">0</div>
+    <div class="gcap" data-a="up" data-d="1">рост личных продаж (NS) за три месяца</div>
+  </div>
+  <div id="chart"></div>
+</section>
+
+<!-- 7 · КАК Я ПРОДАЮ -->
+<section class="slide dark" id="s7" data-wipe>
+  <div class="kicker" data-a="up">02 · Система</div>
+  <h2 data-a="lines"><span class="ln"><span>Как я</span></span><span class="ln"><span><em>продаю</em></span></span></h2>
+  <div class="sub" data-a="up" data-d=".5">Цифры — не случайность. За каждой стоит конкретный шаг продажи.</div>
+  <div class="cards" data-a="stagger" data-d=".55">
+    <div class="card"><div class="n">01</div><h3>Контакт</h3><p>Начинаю не с «вам помочь?», а с истории коллекции или новинки на стенде.</p><span class="tag">CR</span></div>
+    <div class="card"><div class="n">02</div><h3>Потребность</h3><p>Выясняю, для чего вещь: корт, офис, отпуск, подарок — и подбираю под задачу.</p><span class="tag">AUR</span></div>
+    <div class="card"><div class="n">03</div><h3>Ценность</h3><p>Рассказываю про пике, посадку и историю поло L.12.12. Вопрос цены снимается сам.</p><span class="tag">AUR · ATV</span></div>
+    <div class="card"><div class="n">04</div><h3>Образ целиком</h3><p>Собираю комплект: поло + кепка + носки или сумка. Цель — минимум две вещи в чеке.</p><span class="tag">UPT</span></div>
+  </div>
+</section>
+
+<!-- 8 · КЕЙС -->
+<section class="slide cream" id="s8" data-wipe>
+  <div>
+    <div class="kicker" data-a="up">03 · Кейс</div>
+    <h2 data-a="lines"><span class="ln"><span>Рост UPT</span></span><span class="ln"><span><em>за 3 месяца</em></span></span></h2>
+    <table data-a="up" data-d=".6"><thead><tr><th>Месяц</th><th>UPT</th><th>AUR, ₽</th><th>ATV, ₽</th></tr></thead><tbody id="caseBody"></tbody></table>
+  </div>
+  <div class="vline" data-a="liney" data-d=".3"></div>
+  <div class="blocks">
+    <div class="blk" data-a="up" data-d=".6"><h4>Проблема</h4><ul><li>Покупатели чаще брали одну вещь</li><li>Мало допродаж аксессуаров на кассе</li></ul></div>
+    <div class="blk" data-a="up" data-d=".8"><h4>Что сделал</h4><ul><li>Собрал для себя готовые связки «поло + аксессуар»</li><li>Предлагаю комплект на примерке, а не на кассе</li><li>Отрабатываю цену через качество и историю бренда</li></ul></div>
+    <div class="blk" data-a="up" data-d="1.0"><h4>Результат</h4><div class="res"><div><b data-a="count" data-d="1.2" data-dec="2" id="cUpt">0</b><span>UPT в последнем месяце</span></div><div><b data-a="count" data-d="1.3" data-pre="+" data-suf="%" id="cAtv">0</b><span>рост среднего чека</span></div></div></div>
+  </div>
+</section>
+
+<!-- 9 · ПРОДУКТ -->
+<section class="slide dark pique" id="s9">
+  <div class="ghost" data-px="-24">1933</div>
+  <div class="kicker" data-a="up">Знание продукта</div>
+  <h2 data-a="lines"><span class="ln"><span>Знаю, <em>что</em> продаю</span></span></h2>
+  <p class="lead" data-a="up" data-d=".5">Покупатель платит не за ткань, а за историю. Я умею её рассказать — расшифровка поло L.12.12:</p>
+  <div class="code">
+    <div class="ch" data-a="flip" data-d=".7"><b>L</b><span>Lacoste</span></div>
+    <div class="ch" data-a="flip" data-d=".82"><b class="dotc">1</b><span>фирменное пике</span></div>
+    <div class="ch" data-a="flip" data-d=".94"><b>12</b><span>короткий рукав</span></div>
+    <div class="ch" data-a="flip" data-d="1.06"><b class="dotc">12</b><span>двенадцатый прототип — тот самый</span></div>
+  </div>
+  <div class="facts">
+    <div data-a="up" data-d="1.3"><b>1933</b>Рене Лакост выпускает первую рубашку с крокодилом</div>
+    <div data-a="up" data-d="1.42"><b>«Крокодил»</b>прозвище Рене от прессы за хватку на корте</div>
+  </div>
+</section>
+
+<!-- 10 · ПЛАН -->
+<section class="slide cream" id="s10" data-wipe>
+  <div class="kicker" data-a="up">04 · План</div>
+  <h2 data-a="lines"><span class="ln"><span>Что я сделаю как</span></span><span class="ln"><span><em>старший продавец</em></span></span></h2>
+  <div class="track" data-a="linex" data-d=".5"></div>
+  <div class="nodes">
+    <div class="node" data-a="up" data-d=".8"><div class="pt"><i></i></div><div class="d">30<small>дней</small></div><h3>Делюсь системой</h3><p>Короткие брифы перед сменой: связки товаров и приёмы допродажи.</p></div>
+    <div class="node" data-a="up" data-d="1.05"><div class="pt"><i></i></div><div class="d">60<small>дней</small></div><h3>Держу KPI смены</h3><p>Слежу за UPT и ATV команды в течение дня, помогаю в сложных продажах.</p></div>
+    <div class="node" data-a="up" data-d="1.3"><div class="pt"><i></i></div><div class="d">90<small>дней</small></div><h3>Опора администратора</h3><p>Расписание, VM, открытие и закрытие смены, кассовая дисциплина.</p></div>
+  </div>
+</section>
+
+<!-- 11 · ФИНАЛ -->
+<section class="slide dark pique" id="s11" data-wipe>
+  <svg class="court2" viewBox="0 0 1920 1080" preserveAspectRatio="none" data-a="draw" data-d="0" data-dur="2.6"><rect x="150" y="120" width="1620" height="840"/><line x1="960" y1="120" x2="960" y2="960"/><line x1="150" y1="230" x2="1770" y2="230"/><line x1="150" y1="850" x2="1770" y2="850"/><line x1="520" y1="230" x2="520" y2="850"/><line x1="1400" y1="230" x2="1400" y2="850"/><line x1="520" y1="540" x2="1400" y2="540"/></svg>
+  <div class="merci"><span data-a="chars" data-d=".2">Merci</span><span class="slot"><span class="ball" data-a="drop" data-d="1.0"><svg viewBox="0 0 130 130"><path d="M22 18 C58 46 58 84 22 112"/><path d="M108 18 C72 46 72 84 108 112"/></svg></span></span></div>
+  <div class="who" data-a="up" data-d="1.5">Матвеев Вадим Владимирович<span>готов к новой роли</span></div>
+  <svg class="flogo" viewBox="0 0 474.54 84.11" data-a="reveal" data-d="1.9" role="img" aria-label="Lacoste"><use href="#lcl"/></svg>
+</section>
+
+<div class="wipe a"></div><div class="wipe b"></div>
+<div id="hud"><svg class="hlogo" viewBox="0 0 474.54 84.11" aria-hidden="true"><use href="#lcl"/></svg><span class="hname">МАТВЕЕВ В. В.</span><div class="bar-wrap"><div class="bar"></div><div class="fill" id="fill"></div></div><span id="cnt">01 / 11</span></div>
+<div id="hint">→ дальше · F — на весь экран</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+/* ============================================================
+   ДАННЫЕ — ПРИМЕР. Завтра заменить на реальные таблицы.
+   d: [NS, UPT, AUR, ATV] по месяцам
+   ============================================================ */
+const MONTHS = ['Август', 'Сентябрь', 'Октябрь'];
+const TEAM = [
+  { n: 'Матвеев Вадим', me: true, d: [[2410300, 1.34, 9120, 12221], [2684500, 1.41, 9480, 13367], [3312450, 1.48, 9760, 14445]] },
+  { n: 'Сотрудник 2', d: [[2980400, 1.31, 9310, 12196], [2710200, 1.29, 9150, 11804], [2604800, 1.30, 9020, 11726]] },
+  { n: 'Сотрудник 3', d: [[2650900, 1.36, 8870, 12063], [2402300, 1.27, 8990, 11417], [2288100, 1.26, 9105, 11472]] },
+  { n: 'Сотрудник 4', d: [[1985300, 1.22, 8650, 10553], [1890500, 1.25, 8820, 11025], [2105700, 1.28, 8790, 11251]] },
+  { n: 'Сотрудник 5', d: [[1402100, 1.19, 8410, 10008], [1655800, 1.23, 8560, 10529], [1720300, 1.24, 8630, 10701]] },
+];
+/* ============================================================ */
+
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const fmt = (v, dec = 0) => Number(v).toLocaleString('ru-RU', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+const ME = TEAM.find(t => t.me), LAST = MONTHS.length - 1;
+const avg = (m, k) => TEAM.reduce((s, t) => s + t.d[m][k], 0) / TEAM.length;
+const rankOf = (m) => [...TEAM].sort((a, b) => b.d[m][0] - a.d[m][0]).indexOf(ME) + 1;
+
+/* ---------- построение слайдов из данных ---------- */
+// таблица KPI
+const ROWH = 108;
+const tabs = $('#tabs');
+tabs.innerHTML = MONTHS.map(m => `<span>${m}</span>`).join('') + '<i></i>';
+const tbody = $('#tbody');
+TEAM.forEach((t, i) => {
+  const r = document.createElement('div');
+  r.className = 'row' + (t.me ? ' me' : '');
+  r.innerHTML = `<span class="nm"><span class="pos">${i + 1}</span>${t.n}</span><span class="v"></span><span class="v"></span><span class="v"></span><span class="v"></span>`;
+  t.el = r; t.cur = [0, 0, 0, 0];
+  tbody.appendChild(r);
+});
+const DEC = [0, 2, 0, 0];
+function setMonth(m, instant) {
+  const order = [...TEAM].sort((a, b) => b.d[m][0] - a.d[m][0]);
+  const tabEls = $$('span', tabs), act = tabEls[m];
+  tabEls.forEach((e, i) => e.classList.toggle('act', i === m));
+  gsap.to($('i', tabs), { x: act.offsetLeft, width: act.offsetWidth, duration: instant ? 0 : .7, ease: 'expo.inOut' });
+  order.forEach((t, rank) => {
+    $('.pos', t.el).textContent = rank + 1;
+    gsap.to(t.el, { y: rank * ROWH, duration: instant ? 0 : 1.1, ease: 'expo.inOut', delay: instant ? 0 : rank * .03, overwrite: true });
+    const vals = $$('.v', t.el);
+    const o = { a: t.cur[0], b: t.cur[1], c: t.cur[2], e: t.cur[3] };
+    t.tw && t.tw.kill();
+    t.tw = gsap.to(o, { a: t.d[m][0], b: t.d[m][1], c: t.d[m][2], e: t.d[m][3], duration: instant ? 0 : 1.1, ease: 'power3.out',
+      onUpdate: () => { [o.a, o.b, o.c, o.e].forEach((v, k) => vals[k].textContent = fmt(v, DEC[k])); } });
+    t.cur = [...t.d[m]];
+  });
+  const rn = $('#rankNum'), newRank = rankOf(m);
+  if (instant) { rn.textContent = newRank; return; }
+  if (rn.textContent != newRank) {
+    gsap.timeline().to(rn, { yPercent: -110, duration: .4, ease: 'power3.in' })
+      .call(() => rn.textContent = newRank).fromTo(rn, { yPercent: 110 }, { yPercent: 0, duration: .7, ease: 'expo.out' });
+  }
+}
+
+// столбцы «я против среднего»
+$('#s5month').textContent = MONTHS[LAST];
+const METRICS = [['NS', 0, 0], ['UPT', 1, 2], ['AUR', 2, 0], ['ATV', 3, 0]];
+$('#groups').innerHTML = METRICS.map(([lbl, k, dec], i) => {
+  const a = avg(LAST, k), me = ME.d[LAST][k], max = Math.max(a, me), base = max * 0.55;
+  // нижняя часть шкалы обрезана, чтобы разница была видна (как на графиках в отчётах)
+  const h = v => Math.max(.12, (v - base) / (max - base)) * 100;
+  const delta = Math.round((me / a - 1) * 100);
+  const short = v => k === 0 ? fmt(v / 1e6, 2) + ' млн' : fmt(v, dec);
+  return `<div class="grp"><div class="delta" data-a="count" data-d="${1 + i * .12}" data-to="${delta}" data-pre="${delta >= 0 ? '+' : ''}" data-suf="%">0</div>
+    <div class="bars"><div class="b avg" data-a="bar" data-d="${.6 + i * .12}" style="height:${h(a)}%"><em>${short(a)}</em></div>
+    <div class="b me" data-a="bar" data-d="${.7 + i * .12}" style="height:${h(me)}%"><em>${short(me)}</em></div></div>
+    <div class="gl">${lbl}</div></div>`;
+}).join('');
+
+// график динамики
+(function () {
+  const W = 1060, H = 600, P = { l: 30, r: 60, t: 70, b: 80 };
+  const mine = MONTHS.map((_, m) => ME.d[m][0]), av = MONTHS.map((_, m) => avg(m, 0));
+  const all = [...mine, ...av], lo = Math.min(...all) * .8, hi = Math.max(...all) * 1.08;
+  const x = i => P.l + i * (W - P.l - P.r) / (MONTHS.length - 1), y = v => P.t + (1 - (v - lo) / (hi - lo)) * (H - P.t - P.b);
+  const path = arr => arr.map((v, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join(' ');
+  const grid = [0, 1, 2, 3].map(i => { const yy = P.t + i * (H - P.t - P.b) / 3; return `<line x1="${P.l}" x2="${W - P.r + 40}" y1="${yy}" y2="${yy}"/>`; }).join('');
+  $('#chart').innerHTML = `<svg viewBox="0 0 ${W} ${H}">
+    <defs><linearGradient id="gArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F8F52" stop-opacity=".28"/><stop offset="1" stop-color="#1F8F52" stop-opacity="0"/></linearGradient></defs>
+    <g class="grid" data-a="fade" data-d=".3">${grid}</g>
+    <path class="area" data-a="fade" data-d="1.6" d="${path(mine)} L${x(LAST)} ${H - P.b} L${x(0)} ${H - P.b} Z"/>
+    <g data-a="draw" data-d=".9" data-dur="1.4"><path class="avg" d="${path(av)}"/></g>
+    <g data-a="draw" data-d=".6" data-dur="1.8"><path class="mine" d="${path(mine)}"/></g>
+    ${mine.map((v, i) => `<circle class="dot" data-a="pop" data-d="${.8 + i * .45}" cx="${x(i)}" cy="${y(v)}" r="16"/>
+      <text class="val" data-a="fade" data-d="${.9 + i * .45}" x="${x(i)}" y="${y(v) - 38}" text-anchor="middle">${fmt(v / 1e6, 2)} млн</text>`).join('')}
+    ${MONTHS.map((m, i) => `<text class="lab" x="${x(i)}" y="${H - 22}" text-anchor="middle">${m}</text>`).join('')}
+    <text class="lab" data-a="fade" data-d="1.6" x="${x(LAST) + 24}" y="${y(av[LAST]) + 8}">среднее</text>
+  </svg>`;
+  $('#growth').dataset.to = Math.round((mine[LAST] / mine[0] - 1) * 100);
+})();
+
+// кейс
+$('#caseBody').innerHTML = MONTHS.map((m, i) => `<tr class="${i === LAST ? 'hl' : ''}"><td>${m}</td><td>${fmt(ME.d[i][1], 2)}</td><td>${fmt(ME.d[i][2])}</td><td>${fmt(ME.d[i][3])}</td></tr>`).join('');
+$('#cUpt').dataset.to = ME.d[LAST][1];
+$('#cAtv').dataset.to = Math.round((ME.d[LAST][3] / ME.d[0][3] - 1) * 100);
+
+/* ---------- разбивка текста ---------- */
+$$('[data-a="words"]').forEach(el => {
+  const walk = n => [...n.childNodes].forEach(c => {
+    if (c.nodeType === 3) {
+      const f = document.createDocumentFragment();
+      c.textContent.split(/(\s+)/).forEach(p => { if (!p) return; if (/^\s+$/.test(p)) f.append(p); else { const s = document.createElement('span'); s.className = 'w'; s.textContent = p; f.append(s); } });
+      c.replaceWith(f);
+    } else walk(c);
+  });
+  walk(el);
+});
+$$('[data-a="chars"]').forEach(el => el.innerHTML = [...el.textContent].map(c => `<span class="c">${c}</span>`).join(''));
+
+/* ---------- бегущие строки ---------- */
+$$('#s2 .wall div').forEach((row, i) => {
+  row.textContent = row.textContent.repeat(4);
+  gsap.fromTo(row, { xPercent: i % 2 ? -50 : 0 }, { xPercent: i % 2 ? 0 : -50, duration: 60 + i * 8, ease: 'none', repeat: -1 });
+});
+
+/* ---------- анимации появления ---------- */
+const A = {
+  lines: (el, tl, t) => tl.fromTo($$('.ln>span', el), { yPercent: 115 }, { yPercent: 0, duration: 1.3, ease: 'expo.out', stagger: .11 }, t),
+  up: (el, tl, t) => tl.fromTo(el, { y: 50, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1.05, ease: 'power3.out' }, t),
+  fade: (el, tl, t) => tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.1, ease: 'power1.out' }, t),
+  words: (el, tl, t) => tl.fromTo($$('.w', el), { opacity: .08, y: 26, filter: 'blur(8px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: .9, stagger: .07, ease: 'power3.out' }, t),
+  chars: (el, tl, t) => tl.fromTo($$('.c', el), { yPercent: 80, opacity: 0, rotate: 9 }, { yPercent: 0, opacity: 1, rotate: 0, duration: 1.4, ease: 'expo.out', stagger: .07 }, t),
+  linex: (el, tl, t) => tl.fromTo(el, { scaleX: 0 }, { scaleX: 1, duration: 1.3, ease: 'expo.inOut' }, t),
+  liney: (el, tl, t) => tl.fromTo(el, { scaleY: 0 }, { scaleY: 1, duration: 1.4, ease: 'expo.inOut' }, t),
+  bar: (el, tl, t) => tl.fromTo(el, { scaleY: 0 }, { scaleY: 1, duration: 1.3, ease: 'expo.out' }, t)
+    .fromTo($('em', el), { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: .6 }, t + .6),
+  pop: (el, tl, t) => tl.fromTo(el, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: .8, ease: 'back.out(3)' }, t),
+  stagger: (el, tl, t) => tl.fromTo(el.children, { y: 140, autoAlpha: 0, rotate: 3 }, { y: 0, autoAlpha: 1, rotate: 0, duration: 1.2, ease: 'expo.out', stagger: .13 }, t),
+  flip: (el, tl, t) => tl.fromTo($('b', el), { rotateX: -95, autoAlpha: 0, transformOrigin: '50% 100%' }, { rotateX: 0, autoAlpha: 1, duration: 1.1, ease: 'expo.out' }, t)
+    .fromTo($('span', el), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: .7 }, t + .25)
+    .fromTo(el, { borderTopColor: 'rgba(244,239,228,0)' }, { borderTopColor: 'rgba(244,239,228,.35)', duration: .8 }, t),
+  draw: (el, tl, t) => $$('path,line,rect,polyline', el).forEach(p => {
+    const L = p.getTotalLength(); const dash = getComputedStyle(p).strokeDasharray;
+    if (dash && dash !== 'none' && !p.dataset.len) { // пунктир — проявляем прозрачностью
+      tl.fromTo(p, { opacity: 0 }, { opacity: 1, duration: +(el.dataset.dur || 1.6) }, t); return;
+    }
+    p.dataset.len = L; p.style.strokeDasharray = L;
+    tl.fromTo(p, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: +(el.dataset.dur || 1.8), ease: 'power2.inOut' }, t);
+  }),
+  count: (el, tl, t) => {
+    const o = { v: 0 }, dec = +(el.dataset.dec || 0);
+    const put = () => el.textContent = (el.dataset.pre || '') + fmt(o.v, dec) + (el.dataset.suf || '');
+    tl.fromTo(o, { v: 0 }, { v: +el.dataset.to, duration: 1.8, ease: 'power3.out', onUpdate: put, onStart: put }, t);
+  },
+  panel: (el, tl, t) => tl.fromTo(el, { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: 'expo.inOut' }, t),
+  reveal: (el, tl, t) => tl.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.6, ease: 'expo.inOut' }, t),
+  croc: (el, tl, t) => tl.fromTo(el, { x: 260, autoAlpha: 0, rotate: 6 }, { x: 0, autoAlpha: 1, rotate: 0, duration: 1.5, ease: 'expo.out' }, t)
+    .fromTo(el, { scaleY: 1 }, { scaleY: .94, transformOrigin: '50% 100%', duration: .18, yoyo: true, repeat: 3, ease: 'sine.inOut' }, t + 1.3),
+  drop: (el, tl, t) => tl.fromTo(el, { y: -900, rotate: -200 }, { y: 0, rotate: 0, duration: 1.7, ease: 'bounce.out' }, t),
+  shadow: (el, tl, t) => tl.fromTo(el, { scale: .2, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.7, ease: 'bounce.out' }, t),
+};
+
+/* ---------- слайды со своими шагами ---------- */
+const HOOKS = {
+  s4: {
+    steps: MONTHS.length,
+    enter(tl) {
+      TEAM.forEach(t => t.cur = [0, 0, 0, 0]);
+      setMonth(0, true);
+      TEAM.forEach(t => $$('.v', t.el).forEach(v => v.textContent = '0'));
+      TEAM.forEach(t => t.cur = [0, 0, 0, 0]);
+      tl.fromTo($$('.row', tbody), { autoAlpha: 0, x: 60 }, { autoAlpha: 1, x: 0, duration: 1, ease: 'expo.out', stagger: .08 }, .6)
+        .call(() => setMonth(0), null, .7);
+    },
+    step: m => setMonth(m),
+  },
+};
+
+/* ---------- движок ---------- */
+const stage = $('#stage'), slides = $$('.slide'), fill = $('#fill'), cnt = $('#cnt'), hud = $('#hud');
+const wipes = $$('.wipe');
+let cur = -1, step = 0, enterTl = null, busy = false;
+
+function fit() { const s = Math.min(innerWidth / 1920, innerHeight / 1080); stage.style.transform = `translate(-50%,-50%) scale(${s})`; }
+addEventListener('resize', fit); fit();
+function hudFor(sl) {
+  const c = sl.classList.contains('cream');
+  hud.style.color = c ? 'var(--ink)' : 'var(--cream)';
+  hud.classList.toggle('oncream', c);
+}
+// мячик ложится точно в конец «Владимирович» (точка вместо точки)
+function placeBall() {
+  const em = $('#lastName'), b = $('#coverBall');
+  let x = 0, y = 0, e = em;
+  while (e && e !== stage) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
+  b.style.left = (x + em.offsetWidth + 10) + 'px';
+  b.style.top = (y + em.offsetHeight - 150) + 'px';
+}
+
+function enter(sl) {
+  enterTl && enterTl.kill();
+  const tl = enterTl = gsap.timeline();
+  gsap.set(sl, { autoAlpha: 1, scale: 1, zIndex: 1 });
+  sl.classList.add('on');
+  $$('[data-a]', sl).forEach((el, i) => { const f = A[el.dataset.a]; f && f(el, tl, el.dataset.d !== undefined ? +el.dataset.d : .15 + i * .08); });
+  HOOKS[sl.id] && HOOKS[sl.id].enter(tl);
+}
+
+function go(n) {
+  if (n < 0 || n >= slides.length || n === cur || busy) return;
+  const prev = slides[cur], next = slides[n], forward = n > cur;
+  cur = n; step = 0;
+  hudFor(next);
+  gsap.to(fill, { scaleX: (n + 1) / slides.length, duration: 1, ease: 'expo.inOut' });
+  cnt.textContent = String(n + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+  if (!prev) { enter(next); return; }
+  busy = true;
+  if (next.hasAttribute('data-wipe') || prev.hasAttribute('data-wipe') && false) {
+    const dir = forward ? 1 : -1;
+    gsap.timeline({ onComplete: () => busy = false })
+      .fromTo(wipes[0], { xPercent: -101 * dir }, { xPercent: 0, duration: .55, ease: 'power4.in' })
+      .fromTo(wipes[1], { xPercent: -101 * dir }, { xPercent: 0, duration: .55, ease: 'power4.in' }, .08)
+      .call(() => { prev.classList.remove('on'); gsap.set(prev, { autoAlpha: 0 }); enter(next); enterTl.pause(); })
+      .to(wipes[1], { xPercent: 101 * dir, duration: .7, ease: 'power4.out' })
+      .to(wipes[0], { xPercent: 101 * dir, duration: .7, ease: 'power4.out' }, '<.08')
+      .call(() => enterTl.play(), null, '<-.05');
+  } else {
+    enter(next);
+    gsap.set(prev, { zIndex: 5 });
+    gsap.to(prev, { autoAlpha: 0, scale: 1.04, duration: .55, ease: 'power2.in', onComplete: () => { prev.classList.remove('on'); gsap.set(prev, { zIndex: 0, scale: 1 }); busy = false; } });
+  }
+}
+function next() {
+  const h = HOOKS[slides[cur].id];
+  if (h && step < h.steps - 1) { step++; h.step(step); return; }
+  go(cur + 1);
+}
+function prev() { go(cur - 1); }
+
+addEventListener('keydown', e => {
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(slides.length - 1);
+  else if (e.key === 'f' || e.key === 'F' || e.key === 'а' || e.key === 'А') {
+    try { const r = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); r && r.catch(() => {}); } catch (_) {}
+  }
+});
+$('#skiprot').addEventListener('click', e => { e.stopPropagation(); document.body.classList.add('skiprot'); });
+addEventListener('click', e => { if (e.target.closest('#rotate')) return; e.clientX < innerWidth * .25 ? prev() : next(); });
+if (matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.globalTimeline.timeScale(4);
+let tx = 0; addEventListener('touchstart', e => tx = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 50) d < 0 ? next() : prev(); });
+
+// параллакс за мышью и скрытие курсора
+let idleT;
+addEventListener('mousemove', e => {
+  const dx = e.clientX / innerWidth - .5, dy = e.clientY / innerHeight - .5;
+  $$('.slide.on [data-px]').forEach(el => gsap.to(el, { x: dx * el.dataset.px * 2, y: dy * el.dataset.px * 2, duration: 1.2, ease: 'power3.out', overwrite: 'auto' }));
+  document.body.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(() => document.body.classList.add('idle'), 2000);
+});
+
+// Статичный кадр для экспорта в PDF: слайд n в конечном состоянии (m — месяц для таблицы KPI)
+window.__render = (n, m = 0) => {
+  slides.forEach(s => { s.classList.remove('on'); gsap.set(s, { autoAlpha: 0 }); });
+  cur = n; step = m; busy = false;
+  const sl = slides[n];
+  hudFor(sl);
+  gsap.set(fill, { scaleX: (n + 1) / slides.length });
+  cnt.textContent = String(n + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+  enter(sl); enterTl.progress(1);
+  if (HOOKS[sl.id]) setMonth(m, true);
+  gsap.set('#hint', { opacity: 0 });
+};
+window.__steps = slides.map(s => HOOKS[s.id] ? HOOKS[s.id].steps : 1);
+
+gsap.set(slides, { autoAlpha: 0 });
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
+  placeBall();
+  if (location.hash === '#export') return;
+  go(0);
+  gsap.timeline({ delay: 2.6 }).to('#hint', { opacity: .55, duration: .8 }).to('#hint', { opacity: 0, duration: .8 }, '+=4');
+});
+</script>
